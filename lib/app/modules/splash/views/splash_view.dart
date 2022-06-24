@@ -4,6 +4,8 @@ import 'dart:async';
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get/get.dart';
+import 'package:levy/app/modules/categoryPage/controllers/category_page_controller.dart';
 
 import '../../buttonnavigation/views/controll_room_view.dart';
 
@@ -14,10 +16,11 @@ class SecondScreen extends StatefulWidget {
 
 class _SecondScreenState extends State<SecondScreen> {
   bool _a = false;
-
+  final controller = Get.put(CategoryPageController());
   @override
   void initState() {
     super.initState();
+    // alldatalooding();
     Timer(const Duration(milliseconds: 500), () {
       setState(() {
         _a = !_a;
@@ -72,6 +75,10 @@ class _SecondScreenState extends State<SecondScreen> {
       ),
     );
   }
+
+  // Future<void> alldatalooding() async {
+  //   await controller.refershUi();
+  // }
 }
 
 class SlideTransitionAnimation extends PageRouteBuilder {

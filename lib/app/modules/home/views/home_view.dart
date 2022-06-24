@@ -5,9 +5,10 @@ import 'package:levy/app/modules/home/views/widget/totelBalanse.dart';
 
 import '../../../data/db_functions/Translation/translation_db.dart';
 import '../../globealVaribles/globle.dart';
+import 'package:get/get.dart';
 
 class HomeView extends StatelessWidget {
-  const HomeView({Key? key}) : super(key: key);
+  HomeView({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Container(

@@ -19,7 +19,7 @@ class Topsection extends StatefulWidget {
 class TopsectionState extends State<Topsection> {
   @override
   void initState() {
-    // nowcategory = categorytype.income;
+    nowcategory = categorytype.income;
     super.initState();
   }
 

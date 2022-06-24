@@ -8,9 +8,12 @@ import '../../../Model/Categroy_Model/catagroy_model.dart';
 import '../../../Model/Translation_model/translation_model.dart';
 import '../../../data/db_functions/Category_db/category_db.dart';
 import '../../../data/db_functions/Translation/translation_db.dart';
+import '../../../data/db_functions/category_db/category_db.dart';
 import '../../buttonnavigation/views/controll_room_view.dart';
+import '../../categoryPage/controllers/category_page_controller.dart';
 import '../../globealVaribles/globle.dart';
 import 'textFiled_widget.dart';
+import 'package:get/get.dart';
 
 // ignore: must_be_immutable
 class Detailsadding extends StatefulWidget {
@@ -21,6 +24,8 @@ class Detailsadding extends StatefulWidget {
 }
 
 class _DetailsaddingState extends State<Detailsadding> {
+  final controller = Get.put(CategoryPageController());
+
   final amountcondroller = TextEditingController();
   final notescondroller = TextEditingController();
   final categorycondroller = TextEditingController();
@@ -234,7 +239,7 @@ class _DetailsaddingState extends State<Detailsadding> {
               color: Color(0xff0097a7),
             ),
             child: nowcategory == categorytype.income &&
-                    Categoeydb.instense.IncomeCategory.value.isEmpty
+                    controller.incomeCategory.isEmpty
                 ? Column(
                     children: [
                       SizedBox(
@@ -268,7 +273,7 @@ class _DetailsaddingState extends State<Detailsadding> {
                     ],
                   )
                 : nowcategory == categorytype.expanse &&
-                        Categoeydb.instense.ExpanseCategory.value.isEmpty
+                        controller.expanseCategory.isEmpty
                     ? Column(
                         children: [
                           SizedBox(
@@ -301,56 +306,55 @@ class _DetailsaddingState extends State<Detailsadding> {
                           )
                         ],
                       )
-                    : ValueListenableBuilder(
-                        valueListenable: checking(),
-                        builder: (BuildContext context,
-                            List<CategoryModel> newList, _) {
-                          return GridView.builder(
-                              gridDelegate:
-                                  const SliverGridDelegateWithMaxCrossAxisExtent(
-                                      maxCrossAxisExtent: 200,
-                                      childAspectRatio: 5 / 2,
-                                      crossAxisSpacing: 10,
-                                      mainAxisSpacing: 5),
-                              itemCount: newList.length,
-                              itemBuilder: (BuildContext ctx, index) {
-                                final category = newList[index];
+                    : GetBuilder<CategoryPageController>(
+                        builder: (Getxcontroller) {
+                        List<CategoryModel> categoryData = checking();
+                        return GridView.builder(
+                            gridDelegate:
+                                const SliverGridDelegateWithMaxCrossAxisExtent(
+                                    maxCrossAxisExtent: 200,
+                                    childAspectRatio: 5 / 2,
+                                    crossAxisSpacing: 10,
+                                    mainAxisSpacing: 5),
+                            itemCount: categoryData.length,
+                            itemBuilder: (BuildContext ctx, index) {
+                              final category = categoryData[index];
 
-                                return Padding(
-                                  padding: const EdgeInsets.only(
-                                      left: 10, right: 10, top: 10),
-                                  child: GestureDetector(
-                                    onTap: () {
-                                      categoryshow.text =
-                                          category.name.toString();
-                                      selectedcategory = category;
-                                      Navigator.of(cotx).pop();
-                                      setState(() {});
-                                    },
-                                    child: Card(
-                                      elevation: 10,
-                                      color: const Color.fromARGB(
-                                          255, 253, 253, 253),
-                                      child: ListTile(
-                                        title: Text(category.name),
-                                      ),
+                              return Padding(
+                                padding: const EdgeInsets.only(
+                                    left: 10, right: 10, top: 10),
+                                child: GestureDetector(
+                                  onTap: () {
+                                    // categoryshow.text =
+                                    //     category.name.toString();
+                                    // selectedcategory = category;
+                                    // Navigator.of(cotx).pop();
+                                    // setState(() {});
+                                  },
+                                  child: Card(
+                                    elevation: 10,
+                                    color: const Color.fromARGB(
+                                        255, 253, 253, 253),
+                                    child: ListTile(
+                                      title: Text(category.name),
                                     ),
                                   ),
-                                );
-                              });
-                        }),
+                                ),
+                              );
+                            });
+                      }),
           );
         });
   }
 
   checking() {
     if (nowcategory == categorytype.income) {
-      Categoeydb.instense.IncomeCategory;
-      // selectedcategory = null;
-      return Categoeydb.instense.IncomeCategory;
+      controller.incomeCategory;
+      selectedcategory = null;
+      return controller.incomeCategory;
     } else {
-      Categoeydb.instense.ExpanseCategory;
-      return Categoeydb.instense.ExpanseCategory;
+      controller.expanseCategory;
+      return controller.expanseCategory;
     }
   }
 }

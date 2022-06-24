@@ -3,11 +3,10 @@
 import 'package:flutter/material.dart';
 import 'package:levy/app/modules/categoryPage/views/widgets/expanse_category.dart';
 import 'package:levy/app/modules/categoryPage/views/widgets/income_category.dart';
-
-import 'package:sizer/sizer.dart';
-
+import 'package:levy/app/modules/commonControll/commonController.dart';
 import '../../../../icons/moneyicons.dart';
 import '../../globealVaribles/globle.dart';
+import 'package:get/get.dart';
 
 // ignore: camel_case_types
 class CategoryPageView extends StatelessWidget {
@@ -15,6 +14,8 @@ class CategoryPageView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final controller = Get.put(CommonController());
+
     return WillPopScope(
       onWillPop: () async {
         final deffent = DateTime.now().difference(pressedtime);
@@ -22,7 +23,7 @@ class CategoryPageView extends StatelessWidget {
         pressedtime = DateTime.now();
 
         if (isExieit) {
-          // backexitsnackbar();
+          controller.backexitsnackbar(context);
           return false;
         } else {
           return true;
@@ -77,11 +78,4 @@ class CategoryPageView extends StatelessWidget {
       ),
     );
   }
-
-  // backexitsnackbar() {
-  //   ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-  //       duration: Duration(seconds: 2),
-  //       backgroundColor: Color.fromARGB(255, 66, 66, 66),
-  //       content: Text(" Press back again to exite ")));
-  // }
 }
