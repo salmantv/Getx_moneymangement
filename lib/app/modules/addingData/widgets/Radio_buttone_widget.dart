@@ -1,33 +1,17 @@
 // ignore_for_file: file_names
 
-import 'dart:developer';
-
 import 'package:custom_radio_grouped_button/custom_radio_grouped_button.dart';
 import 'package:flutter/material.dart';
 import 'package:levy/app/modules/addingData/controllers/adding_data_controller.dart';
-import '../../../Model/Categroy_Model/catagroy_model.dart';
-import '../../globealVaribles/globle.dart';
 import 'package:get/get.dart';
 
-class Topsection extends StatefulWidget {
+class Topsection extends StatelessWidget {
   const Topsection({Key? key}) : super(key: key);
-
-  @override
-  State<Topsection> createState() => TopsectionState();
-}
-
-class TopsectionState extends State<Topsection> {
-  @override
-  void initState() {
-    nowcategory = categorytype.income;
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(AddingDataController());
     controller.onInit();
-    log(nowcategory.toString());
     return Column(
       children: [
         IconButton(
@@ -40,13 +24,12 @@ class TopsectionState extends State<Topsection> {
               size: 30,
               color: Colors.white,
             )),
-        Padding(
-          padding: const EdgeInsets.only(top: 5),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: const [],
-          ),
-        ),
+        // Padding(
+        //   padding: const EdgeInsets.only(top: 5),
+        //   child: Row(
+        //     mainAxisAlignment: MainAxisAlignment.center,
+        //   ),
+        // ),
         Padding(
           padding: const EdgeInsets.only(
             top: 20,
@@ -73,22 +56,7 @@ class TopsectionState extends State<Topsection> {
                   selectedColor: Colors.white,
                   unSelectedColor: Colors.black38,
                   textStyle: TextStyle(fontSize: 16)),
-              radioButtonValue: (radiobutton) {
-                if (radiobutton == "Income") {
-                  setState(() {
-                    log(radiobutton.toString());
-                    selectedcategory = null;
-                    categoryshow.text = '';
-                    nowcategory = categorytype.income;
-                  });
-                } else {
-                  setState(() {
-                    categoryshow.text = '';
-                    selectedcategory = null;
-                    nowcategory = categorytype.expanse;
-                  });
-                }
-              },
+              radioButtonValue: controller.radioButtonWorking,
               selectedColor: const Color(0xff0097a7)),
         )
       ],

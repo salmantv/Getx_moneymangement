@@ -26,7 +26,7 @@ class TopBackgroundcontainer extends StatelessWidget {
                   ),
                 ]),
             child: const Topsection()),
-        const Detailsadding(),
+        Detailsadding(),
       ],
     );
   }

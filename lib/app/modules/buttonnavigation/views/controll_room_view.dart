@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:levy/app/modules/addingData/views/adding_data_view.dart';
 import 'package:levy/app/modules/buttonnavigation/views/buttonnavigation_view.dart';
 import 'package:levy/app/modules/categoryPage/views/category_page_view.dart';
+import 'package:levy/app/modules/globealVaribles/globle.dart';
 import 'package:levy/app/modules/home/views/home_view.dart';
 import 'package:levy/app/modules/settings/views/settings_view.dart';
 
@@ -46,6 +47,7 @@ class Controll extends StatelessWidget {
                 color: Colors.black,
               ),
               onPressed: () async {
+                nowcategory = null;
                 Get.to(AddingDataView());
               }),
           bottomNavigationBar: const ButtonnavigationView(),

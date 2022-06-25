@@ -1,11 +1,14 @@
 // ignore_for_file: avoid_function_literals_in_foreach_calls
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import '../../Model/Translation_model/translation_model.dart';
-import '../../data/db_functions/Translation/translation_db.dart';
 
 import '../../Model/Categroy_Model/catagroy_model.dart';
+import '../home/controllers/home_controller.dart';
+
+final homecontroller = Get.put(HomeController());
 
 categorytype? nowcategory;
 CategoryModel? selectedcategory;
@@ -24,8 +27,7 @@ math(value) {
   toteltracstion = 0;
   totelincome = 0;
   totelexpanse = 0;
-
-  Tracnsltion.instense.transltionsnotfier.value.forEach((element) {
+  homecontroller.transltionsnotfier.forEach((element) {
     if (element.categorytyp == categorytype.income &&
         element.datetime.month == DateTime.now().month) {
       totelincome += element.amount;

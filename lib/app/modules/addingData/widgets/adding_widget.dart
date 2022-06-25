@@ -2,13 +2,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
+import 'package:levy/app/modules/addingData/controllers/adding_data_controller.dart';
+import 'package:levy/app/modules/addingData/widgets/categoryButttomsheet.dart';
 import '../../../../icons/myicons.dart';
-import '../../../Model/Categroy_Model/catagroy_model.dart';
-import '../../../Model/Translation_model/translation_model.dart';
-import '../../../data/db_functions/Category_db/category_db.dart';
-import '../../../data/db_functions/Translation/translation_db.dart';
-import '../../../data/db_functions/category_db/category_db.dart';
 import '../../buttonnavigation/views/controll_room_view.dart';
 import '../../categoryPage/controllers/category_page_controller.dart';
 import '../../globealVaribles/globle.dart';
@@ -16,35 +12,19 @@ import 'textFiled_widget.dart';
 import 'package:get/get.dart';
 
 // ignore: must_be_immutable
-class Detailsadding extends StatefulWidget {
-  const Detailsadding({Key? key}) : super(key: key);
+class Detailsadding extends StatelessWidget {
+  Detailsadding({Key? key}) : super(key: key);
 
-  @override
-  State<Detailsadding> createState() => _DetailsaddingState();
-}
-
-class _DetailsaddingState extends State<Detailsadding> {
   final controller = Get.put(CategoryPageController());
-
-  final amountcondroller = TextEditingController();
-  final notescondroller = TextEditingController();
+  final controlleradding = Get.put(AddingDataController());
+  final buttomSheet = Get.put(CategoryButtomController());
   final categorycondroller = TextEditingController();
-  DateTime? selecteddate;
-  final dateshowing = TextEditingController();
-  final monthshwing = TextEditingController();
   final formKey = GlobalKey<FormState>();
   double amoutparsed = 0;
 
   @override
-  void initState() {
-    super.initState();
-    dateshowing.text = DateTime.now().day.toString();
-    monthshwing.text = monthnames[DateTime.now().month - 1];
-    selecteddate = DateTime.now();
-  }
-
-  @override
   Widget build(BuildContext context) {
+    controlleradding.onInit();
     return Positioned(
       top: 200,
       left: 20,
@@ -77,7 +57,7 @@ class _DetailsaddingState extends State<Detailsadding> {
                     inputFormatters: [
                       LengthLimitingTextInputFormatter(15),
                     ],
-                    controller: amountcondroller,
+                    controller: controlleradding.amountcondroller,
                     enabled: true,
                     keyboardType: TextInputType.number,
                     decoration: const InputDecoration(
@@ -104,7 +84,7 @@ class _DetailsaddingState extends State<Detailsadding> {
                 ),
                 GestureDetector(
                     onTap: () {
-                      bottomsheet(context);
+                      buttomSheet.bottomsheet(context);
                     },
                     child: MycustomTextfild(
                       TextEdigcontroller: categoryshow,
@@ -124,19 +104,7 @@ class _DetailsaddingState extends State<Detailsadding> {
                         borderRadius: BorderRadius.circular(5.0))),
                   ),
                   onPressed: () async {
-                    await showDatePicker(
-                            context: context,
-                            initialDate: DateTime.now(),
-                            firstDate: DateTime.now()
-                                .subtract(const Duration(days: 365)),
-                            lastDate: DateTime.now())
-                        .then((value) {
-                      setState(() {
-                        dateshowing.text = value!.day.toString();
-                        monthshwing.text = monthnames[value.month - 1];
-                        selecteddate = value;
-                      });
-                    });
+                    await controlleradding.monthepicker(context);
                   },
                   icon: const Padding(
                     padding: EdgeInsets.only(left: 5),
@@ -150,18 +118,22 @@ class _DetailsaddingState extends State<Detailsadding> {
                       SizedBox(
                         width: 20,
                       ),
-                      Text(
-                        "${monthshwing.text} ${dateshowing.text}",
-                        style: const TextStyle(
-                            color: Color.fromARGB(255, 84, 83, 83),
-                            fontSize: 14),
+                      GetBuilder<AddingDataController>(
+                        builder: (GetxController controller) {
+                          return Text(
+                            "${controlleradding.monthshwing.text} ${controlleradding.dateshowing.text}",
+                            style: const TextStyle(
+                                color: Color.fromARGB(255, 84, 83, 83),
+                                fontSize: 14),
+                          );
+                        },
                       ),
                     ],
                   ),
                 ),
                 MycustomTextfild(
                   maxlength: 16,
-                  TextEdigcontroller: notescondroller,
+                  TextEdigcontroller: controlleradding.notescondroller,
                   hinttexts: "Add some notes",
                   icon: MyFlutterApp.note,
                   kay: TextInputType.name,
@@ -180,23 +152,19 @@ class _DetailsaddingState extends State<Detailsadding> {
                                 left: 60, right: 60, top: 15, bottom: 15))),
                     onPressed: () async {
                       formKey.currentState!.validate();
-                      await transltionsadding();
-                      selecteddate == null ||
-                              selectedcategory == null ||
-                              amountcondroller.text == '' ||
-                              amountcondroller.text == '0'
+                      await controlleradding.transltionsadding();
+                      controlleradding.selecteddate == null ||
+                              controlleradding.amountcondroller.text == '' ||
+                              controlleradding.amountcondroller.text == '0'
                           ? ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(
                                   duration: Duration(seconds: 2),
                                   behavior: SnackBarBehavior.floating,
                                   backgroundColor: Colors.red,
                                   content: Text(" Please fill the text box")))
-                          : Navigator.of(context).pushAndRemoveUntil(
-                              MaterialPageRoute(builder: (context) {
-                              return Controll();
-                            }), (route) => false);
+                          : Get.off(Controll());
+                      homecontroller.onInit();
                       chartdrop = 'transltionsnotfier';
-                      setState(() {});
                     },
                     child: const Text("Add")),
               ],
@@ -205,156 +173,5 @@ class _DetailsaddingState extends State<Detailsadding> {
         ),
       ),
     );
-  }
-
-  Future<void> transltionsadding() async {
-    double amoutparsed = double.tryParse(amountcondroller.text) ?? 0;
-
-    if (selectedcategory == null) {
-      return;
-    }
-
-    if (selecteddate == null) {
-      return;
-    }
-
-    final value = TranclationModel(
-        catagry: selectedcategory!,
-        amount: amoutparsed,
-        categorytyp: nowcategory!,
-        datetime: selecteddate!,
-        not: notescondroller.text == "" ? 'Note : empty' : notescondroller.text,
-        id: DateTime.now().microsecondsSinceEpoch.toString());
-    Tracnsltion.instense.addtransltion(value);
-  }
-
-  Future bottomsheet(context) async {
-    showModalBottomSheet(
-        elevation: 0,
-        context: context,
-        builder: (cotx) {
-          return Container(
-            height: 300,
-            decoration: const BoxDecoration(
-              color: Color(0xff0097a7),
-            ),
-            child: nowcategory == categorytype.income &&
-                    controller.incomeCategory.isEmpty
-                ? Column(
-                    children: [
-                      SizedBox(
-                        height: 17,
-                      ),
-                      SizedBox(
-                        width: 200,
-                        child: TextButton(
-                            onPressed: () {
-                              // Navigator.of(context)
-                              //     .push(MaterialPageRoute(builder: (ctx) {
-                              //   return const Category_Page();
-                              // }));
-                            },
-                            child: const Text(
-                              "Sorry ! we can found any Category here ,"
-                              " Now you can add category ,\nif you want add click here and create category ",
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 17),
-                            )),
-                      ),
-                      Center(
-                        child: IconButton(
-                            onPressed: () {},
-                            icon: const Icon(
-                              Icons.add,
-                              size: 30,
-                              color: Colors.white,
-                            )),
-                      )
-                    ],
-                  )
-                : nowcategory == categorytype.expanse &&
-                        controller.expanseCategory.isEmpty
-                    ? Column(
-                        children: [
-                          SizedBox(
-                            height: 17,
-                          ),
-                          SizedBox(
-                            width: 200,
-                            child: TextButton(
-                                onPressed: () {
-                                  // Navigator.of(context)
-                                  //     .push(MaterialPageRoute(builder: (ctx) {
-                                  //   return const Category_Page();
-                                  // }));
-                                },
-                                child: const Text(
-                                  "Sorry ! we can found any Category here ,"
-                                  " Now you can add category ,\nif you want add click here and create category ",
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 17),
-                                )),
-                          ),
-                          Center(
-                            child: IconButton(
-                                onPressed: () {},
-                                icon: const Icon(
-                                  Icons.add,
-                                  size: 30,
-                                  color: Colors.white,
-                                )),
-                          )
-                        ],
-                      )
-                    : GetBuilder<CategoryPageController>(
-                        builder: (Getxcontroller) {
-                        List<CategoryModel> categoryData = checking();
-                        return GridView.builder(
-                            gridDelegate:
-                                const SliverGridDelegateWithMaxCrossAxisExtent(
-                                    maxCrossAxisExtent: 200,
-                                    childAspectRatio: 5 / 2,
-                                    crossAxisSpacing: 10,
-                                    mainAxisSpacing: 5),
-                            itemCount: categoryData.length,
-                            itemBuilder: (BuildContext ctx, index) {
-                              final category = categoryData[index];
-
-                              return Padding(
-                                padding: const EdgeInsets.only(
-                                    left: 10, right: 10, top: 10),
-                                child: GestureDetector(
-                                  onTap: () {
-                                    // categoryshow.text =
-                                    //     category.name.toString();
-                                    // selectedcategory = category;
-                                    // Navigator.of(cotx).pop();
-                                    // setState(() {});
-                                  },
-                                  child: Card(
-                                    elevation: 10,
-                                    color: const Color.fromARGB(
-                                        255, 253, 253, 253),
-                                    child: ListTile(
-                                      title: Text(category.name),
-                                    ),
-                                  ),
-                                ),
-                              );
-                            });
-                      }),
-          );
-        });
-  }
-
-  checking() {
-    if (nowcategory == categorytype.income) {
-      controller.incomeCategory;
-      selectedcategory = null;
-      return controller.incomeCategory;
-    } else {
-      controller.expanseCategory;
-      return controller.expanseCategory;
-    }
   }
 }

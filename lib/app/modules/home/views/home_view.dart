@@ -2,15 +2,17 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:levy/app/modules/home/views/widget/recent_translation.dart';
 import 'package:levy/app/modules/home/views/widget/totelBalanse.dart';
-
-import '../../../data/db_functions/Translation/translation_db.dart';
 import '../../globealVaribles/globle.dart';
 import 'package:get/get.dart';
 
+import '../controllers/home_controller.dart';
+
 class HomeView extends StatelessWidget {
   HomeView({Key? key}) : super(key: key);
+  final homecontroller = Get.put(HomeController());
   @override
   Widget build(BuildContext context) {
+    homecontroller.onInit();
     return Container(
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
@@ -19,17 +21,13 @@ class HomeView extends StatelessWidget {
         ),
         child: ListView(
           children: [
-            ValueListenableBuilder(
-              builder: (BuildContext context, value, Widget? child) {
-                math(value);
-                return Total(
-                  amount: toteltracstion,
-                  heding: "Total balance",
-                  monthe: "Budget Limit For $dateTimenow /$dateTimeyear  ",
-                );
-              },
-              valueListenable: Tracnsltion.instense.transltionsnotfier,
-            ),
+            GetBuilder<HomeController>(builder: (getx) {
+              return Total(
+                amount: toteltracstion,
+                heding: "Total balance",
+                monthe: "Budget Limit For $dateTimenow /$dateTimeyear  ",
+              );
+            }),
             SizedBox(
               height: 30,
             ),
@@ -48,27 +46,7 @@ class HomeView extends StatelessWidget {
                 Padding(
                   padding: EdgeInsets.only(right: 40),
                   child: TextButton(
-                      onPressed: () {
-                        // Navigator.push(
-                        //     context,
-                        //     PageRouteBuilder(
-                        //       transitionDuration: const Duration(seconds: 1),
-                        //       transitionsBuilder: (context, animation,
-                        //           secondaryAnimation, child) {
-                        //         animation = CurvedAnimation(
-                        //             parent: animation,
-                        //             curve: Curves.easeInOutCubicEmphasized);
-                        //         return ScaleTransition(
-                        //             alignment: Alignment.center,
-                        //             child: child,
-                        //             scale: animation);
-                        //       },
-                        //       pageBuilder:
-                        //           (context, animation, secondaryAnimation) {
-                        //         return const Alltranslation();
-                        //       },
-                        //     ));
-                      },
+                      onPressed: () {},
                       child: const AutoSizeText(
                         "See all",
                         maxLines: 1,
@@ -88,7 +66,7 @@ class HomeView extends StatelessWidget {
                       ],
                       color: Colors.white,
                       borderRadius: BorderRadius.all(Radius.circular(30))),
-                  child: const Tranclations()),
+                  child: Tranclations()),
             ),
           ],
         ));

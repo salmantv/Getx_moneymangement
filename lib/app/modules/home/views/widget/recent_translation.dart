@@ -1,38 +1,35 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:levy/app/Model/Categroy_Model/catagroy_model.dart';
+import 'package:levy/app/modules/addingData/views/adding_data_view.dart';
+import 'package:levy/app/modules/commonControll/commonController.dart';
+import 'package:levy/app/modules/home/controllers/home_controller.dart';
 import '../../../../../icons/moneyicons.dart';
 import '../../../../../icons/myicons.dart';
-import '../../../../Model/Translation_model/translation_model.dart';
-import '../../../../data/db_functions/Translation/translation_db.dart';
-import '../../../globealVaribles/globle.dart';
 
-class Tranclations extends StatefulWidget {
-  const Tranclations({
+import '../../../globealVaribles/globle.dart';
+import 'package:get/get.dart';
+
+class Tranclations extends StatelessWidget {
+  Tranclations({
     Key? key,
   }) : super(key: key);
 
-  @override
-  State<Tranclations> createState() => _TranclationsState();
-}
-
-class _TranclationsState extends State<Tranclations> {
+  final homecontroller = Get.put(HomeController());
+  final controllercommen = Get.put(CommonController());
   @override
   Widget build(BuildContext context) {
+    homecontroller.onInit();
     return Padding(
-      padding: const EdgeInsets.only(top: 15, left: 5, right: 5, bottom: 10),
-      child: ValueListenableBuilder(
-          valueListenable: Tracnsltion.instense.transltionsnotfier,
-          builder: (BuildContext context, List<TranclationModel> thislist, _) {
-            return Tracnsltion.instense.transltionsnotfier.value.isEmpty
+        padding: const EdgeInsets.only(top: 15, left: 5, right: 5, bottom: 10),
+        child: GetBuilder<HomeController>(
+          builder: (controller) {
+            return homecontroller.transltionsnotfier.isEmpty
                 ? InkWell(
                     onTap: () async {
                       selectedcategory = null;
                       categoryshow.text = '';
-                      // Navigator.of(context)
-                      //     .push(MaterialPageRoute(builder: (contex) {
-                      //   return const Adding();
-                      // }));
+                      Get.put(AddingDataView());
                     },
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -56,7 +53,8 @@ class _TranclationsState extends State<Tranclations> {
                     ),
                     child: ListView.separated(
                       itemBuilder: (BuildContext context, int index) {
-                        final newList = thislist.reversed;
+                        final newList =
+                            homecontroller.transltionsnotfier.reversed;
                         final values = newList.elementAt(index);
                         return Column(children: [
                           GestureDetector(
@@ -122,7 +120,9 @@ class _TranclationsState extends State<Tranclations> {
                           )
                         ]);
                       },
-                      itemCount: thislist.length < 5 ? thislist.length : 5,
+                      itemCount: homecontroller.transltionsnotfier.length < 5
+                          ? homecontroller.transltionsnotfier.length
+                          : 5,
                       separatorBuilder: (BuildContext context, int index) {
                         return const SizedBox(
                           height: 1,
@@ -131,14 +131,14 @@ class _TranclationsState extends State<Tranclations> {
                       },
                     ),
                   );
-          }),
-    );
+          },
+        ));
   }
 
   Future controlloptions(contescx, value) async {
     showModalBottomSheet(
         elevation: 0,
-        context: context,
+        context: contescx,
         builder: (cotx) {
           return SizedBox(
               height: 90,
@@ -150,14 +150,15 @@ class _TranclationsState extends State<Tranclations> {
                     children: [
                       IconButton(
                         onPressed: () {
-                          Navigator.of(context).pop();
+                          Navigator.of(contescx).pop();
                         },
                         icon: const Icon(MyFlutterApp.cross),
                       ),
                       IconButton(
                           onPressed: () {
-                            Navigator.of(context).pop();
-                            askingDeleting(contescx, value);
+                            Navigator.of(contescx).pop();
+                            controllercommen.TransactionDeleting(
+                                contescx, value);
                           },
                           icon: const Icon(MyFlutterApp.trash_1)),
                       IconButton(
@@ -174,51 +175,5 @@ class _TranclationsState extends State<Tranclations> {
                 ],
               ));
         });
-  }
-
-  Future askingDeleting(contescx, TranclationModel value) async {
-    showDialog(
-        context: contescx,
-        builder: (ctx) {
-          return AlertDialog(
-            title: const Text("Category deleting"),
-            content: SizedBox(
-              height: 120,
-              child: Column(
-                children: [
-                  const Text(
-                    "Are you sure you want to delete the record ?",
-                    style: TextStyle(fontSize: 15),
-                  ),
-                  SizedBox(
-                    height: 60,
-                  ),
-                ],
-              ),
-            ),
-            actions: [
-              TextButton(
-                  onPressed: () {
-                    Navigator.of(ctx).pop();
-                  },
-                  child: const Text("Cancel")),
-              TextButton(
-                  onPressed: () {
-                    Tracnsltion.instense.deleteingTrastions(value);
-                    Navigator.of(context).pop();
-                    setState(() {});
-                    addedsnackbar();
-                  },
-                  child: const Text("ok"))
-            ],
-          );
-        });
-  }
-
-  addedsnackbar() {
-    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        duration: Duration(seconds: 2),
-        backgroundColor: Color.fromARGB(255, 208, 86, 77),
-        content: Text(" You deleted the Transactions  ")));
   }
 }

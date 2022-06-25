@@ -6,8 +6,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get.dart';
 import 'package:levy/app/modules/categoryPage/controllers/category_page_controller.dart';
+import 'package:levy/app/modules/commonControll/commonController.dart';
 
 import '../../buttonnavigation/views/controll_room_view.dart';
+import '../../home/controllers/home_controller.dart';
 
 class SecondScreen extends StatefulWidget {
   @override
@@ -17,6 +19,9 @@ class SecondScreen extends StatefulWidget {
 class _SecondScreenState extends State<SecondScreen> {
   bool _a = false;
   final controller = Get.put(CategoryPageController());
+  final homecontroller = Get.put(HomeController());
+  final commoncontroller = Get.put(CommonController());
+
   @override
   void initState() {
     super.initState();
@@ -33,6 +38,10 @@ class _SecondScreenState extends State<SecondScreen> {
 
   @override
   Widget build(BuildContext context) {
+    homecontroller.onInit();
+    controller.onInit();
+    commoncontroller.refresh();
+
     double _height = MediaQuery.of(context).size.height;
     double _width = MediaQuery.of(context).size.width;
 
@@ -75,10 +84,6 @@ class _SecondScreenState extends State<SecondScreen> {
       ),
     );
   }
-
-  // Future<void> alldatalooding() async {
-  //   await controller.refershUi();
-  // }
 }
 
 class SlideTransitionAnimation extends PageRouteBuilder {
