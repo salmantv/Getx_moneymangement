@@ -83,6 +83,7 @@ class CommonController extends GetxController {
                     Navigator.of(contescx).pop();
                     homecontroll.onInit();
                     update();
+
                     // setState(() {});
                     // addedsnackbar();
                   },

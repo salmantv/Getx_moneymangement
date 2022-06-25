@@ -4,6 +4,8 @@ import 'package:levy/app/Model/Categroy_Model/catagroy_model.dart';
 import 'package:levy/app/modules/addingData/views/adding_data_view.dart';
 import 'package:levy/app/modules/commonControll/commonController.dart';
 import 'package:levy/app/modules/home/controllers/home_controller.dart';
+import 'package:levy/app/modules/upadate/controllers/upadate_controller.dart';
+import 'package:levy/app/modules/upadate/views/upadate_view.dart';
 import '../../../../../icons/moneyicons.dart';
 import '../../../../../icons/myicons.dart';
 
@@ -164,10 +166,9 @@ class Tranclations extends StatelessWidget {
                       IconButton(
                           onPressed: () {
                             nowcategory = null;
-                            // Navigator.of(context).pushAndRemoveUntil(
-                            //     MaterialPageRoute(builder: (ctx) {
-                            //   return Update(Data: value);
-                            // }), (route) => false);
+                            Get.to(UpadateView(
+                              Data: value,
+                            ));
                           },
                           icon: const Icon(MyFlutterApp.pencil_1)),
                     ],

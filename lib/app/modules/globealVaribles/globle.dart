@@ -2,9 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
 import '../../Model/Translation_model/translation_model.dart';
-
 import '../../Model/Categroy_Model/catagroy_model.dart';
 import '../home/controllers/home_controller.dart';
 
@@ -18,7 +16,7 @@ late double totelincome;
 late double totelexpanse;
 DateTime selectedmonth = DateTime.now();
 DateTime? selectday;
-String dropselectedvalus = "2";
+String dropselectedvalus = "1";
 String chartdrop = 'transltionsnotfier';
 
 var dateTimenow = DateTime.now().month.toString();

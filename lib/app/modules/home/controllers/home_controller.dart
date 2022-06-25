@@ -19,12 +19,13 @@ class HomeController extends GetxController {
   List<TranclationModel> incomenotfiere = [];
   List<TranclationModel> expansenotfiere = [];
   List<TranclationModel> testingnotfiere = [];
+  List<TranclationModel> monthnotfier = [];
 
   math(value) {
     toteltracstion = 0;
     totelincome = 0;
     totelexpanse = 0;
-    homecontroller.transltionsnotfier.forEach((element) {
+    for (var element in homecontroller.transltionsnotfier) {
       if (element.categorytyp == categorytype.income &&
           element.datetime.month == DateTime.now().month) {
         totelincome += element.amount;
@@ -33,12 +34,13 @@ class HomeController extends GetxController {
           element.datetime.month == DateTime.now().month) {
         totelexpanse += element.amount;
       }
-    });
+    }
     toteltracstion = totelincome - totelexpanse;
     update();
   }
 
   Future refrsh() async {
+    // homecontroller.onInit();
     todaynotfier.clear();
     yesterdaynotfier.clear();
     final _alllist = await gettranction();
@@ -97,6 +99,7 @@ class HomeController extends GetxController {
     final _db = await Hive.openBox<TranclationModel>("transltion_db_open");
     _db.put(data.id, data);
     refrsh();
+    homecontroller.onInit();
   }
 
   // ignore: non_constant_identifier_names

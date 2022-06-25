@@ -2,6 +2,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:levy/app/modules/home/views/widget/recent_translation.dart';
 import 'package:levy/app/modules/home/views/widget/totelBalanse.dart';
+import 'package:levy/app/modules/seeall/views/seeall_view.dart';
 import '../../globealVaribles/globle.dart';
 import 'package:get/get.dart';
 
@@ -46,7 +47,9 @@ class HomeView extends StatelessWidget {
                 Padding(
                   padding: EdgeInsets.only(right: 40),
                   child: TextButton(
-                      onPressed: () {},
+                      onPressed: () async {
+                        await Get.to(SeeAll());
+                      },
                       child: const AutoSizeText(
                         "See all",
                         maxLines: 1,

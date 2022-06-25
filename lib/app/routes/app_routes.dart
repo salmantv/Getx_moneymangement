@@ -12,6 +12,8 @@ abstract class Routes {
   static const STATISTICS = _Paths.STATISTICS;
   static const SETTINGS = _Paths.SETTINGS;
   static const ADDING_DATA = _Paths.ADDING_DATA;
+  static const SEEALL = _Paths.SEEALL;
+  static const UPADATE = _Paths.UPADATE;
 }
 
 abstract class _Paths {
@@ -23,4 +25,6 @@ abstract class _Paths {
   static const STATISTICS = '/statistics';
   static const SETTINGS = '/settings';
   static const ADDING_DATA = '/adding-data';
+  static const SEEALL = '/seeall';
+  static const UPADATE = '/upadate';
 }

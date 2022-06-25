@@ -4,9 +4,9 @@ import 'dart:async';
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get.dart';
 import 'package:levy/app/modules/categoryPage/controllers/category_page_controller.dart';
 import 'package:levy/app/modules/commonControll/commonController.dart';
+import 'package:levy/app/modules/seeall/controllers/seeall_controller.dart';
 
 import '../../buttonnavigation/views/controll_room_view.dart';
 import '../../home/controllers/home_controller.dart';
@@ -21,6 +21,7 @@ class _SecondScreenState extends State<SecondScreen> {
   final controller = Get.put(CategoryPageController());
   final homecontroller = Get.put(HomeController());
   final commoncontroller = Get.put(CommonController());
+  final seeall = Get.put(SeeallController());
 
   @override
   void initState() {
@@ -41,6 +42,7 @@ class _SecondScreenState extends State<SecondScreen> {
     homecontroller.onInit();
     controller.onInit();
     commoncontroller.refresh();
+    seeall.onInit();
 
     double _height = MediaQuery.of(context).size.height;
     double _width = MediaQuery.of(context).size.width;
