@@ -1,36 +1,29 @@
 // ignore_for_file: unused_field, invalid_use_of_protected_member, invalid_use_of_visible_for_testing_member
 
 import 'package:flutter/material.dart';
-import 'package:sizer/sizer.dart';
+import 'package:get/get.dart';
+import 'package:levy/app/modules/home/controllers/home_controller.dart';
+import 'package:month_year_picker/month_year_picker.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 import '../../../../../icons/myicons.dart';
+import '../../../../Model/Translation_model/translation_model.dart';
+import '../../../globealVaribles/globle.dart';
 
-class Overreview extends StatefulWidget {
-  const Overreview({Key? key}) : super(key: key);
+class Overreview extends StatelessWidget {
+  Overreview({Key? key}) : super(key: key);
 
-  @override
-  State<Overreview> createState() => _OverreviewState();
-}
-
-class _OverreviewState extends State<Overreview> {
-  late TooltipBehavior _tooltipBehavior;
-
-  @override
-  void initState() {
-    _tooltipBehavior = TooltipBehavior(enable: true);
-    super.initState();
-  }
+  final home = Get.put(HomeController());
 
   @override
   Widget build(BuildContext context) {
-    // List<Chartdata> all =
-    //     chartlogic(Tracnsltion.instense.transltionsnotfier.value);
-    // List<Chartdata> today = chartlogic(Tracnsltion.instense.todaynotfier.value);
-    // List<Chartdata> yesterday =
-    //     chartlogic(Tracnsltion.instense.yesterdaynotfier.value);
-    // List<Chartdata> monthly =
-    //     chartlogic(Tracnsltion.instense.monthnotfier.value);
+    late TooltipBehavior _tooltipBehavior;
+    _tooltipBehavior = TooltipBehavior(enable: true);
+
+    List<Chartdata> all = chartlogic(home.transltionsnotfier);
+    List<Chartdata> today = chartlogic(home.todaynotfier);
+    List<Chartdata> yesterday = chartlogic(home.yesterdaynotfier);
+    List<Chartdata> monthly = chartlogic(home.monthnotfier);
 
     return Scaffold(
       backgroundColor: const Color(0xffe0e0e0),
@@ -42,12 +35,12 @@ class _OverreviewState extends State<Overreview> {
             Row(
               children: [
                 Visibility(
-                  // visible: chartdrop == 'monthnotfier' ? true : false,
+                  visible: chartdrop == 'monthnotfier' ? true : false,
                   child: Padding(
                     padding: const EdgeInsets.only(top: 20, left: 60),
                     child: IconButton(
                         onPressed: () {
-                          // onPressed(context: context);
+                          onPressed(context: context);
                         },
                         icon: const Icon(MyFlutterApp.calendar)),
                   ),
@@ -59,7 +52,7 @@ class _OverreviewState extends State<Overreview> {
                   ),
                   child: Container(
                     margin: const EdgeInsets.only(right: 70, top: 20),
-                    width: 150,
+                    width: 130,
                     height: 50, //It will take a 20% of screen width
                     child: Card(
                       color: const Color.fromARGB(255, 4, 196, 196),
@@ -67,7 +60,7 @@ class _OverreviewState extends State<Overreview> {
                           borderRadius: BorderRadius.circular(40.0)),
                       child: DropdownButton(
                         underline: const Text(""),
-                        // value: chartdrop,
+                        value: chartdrop,
                         focusColor: Colors.black,
                         items: const [
                           DropdownMenuItem(
@@ -112,9 +105,9 @@ class _OverreviewState extends State<Overreview> {
                           ),
                         ],
                         onChanged: (newvalue) {
-                          setState(() {
-                            // chartdrop = newvalue.toString();
-                          });
+                          // setState(() {
+                          chartdrop = newvalue.toString();
+                          // });
                         },
                       ),
                     ),
@@ -123,7 +116,7 @@ class _OverreviewState extends State<Overreview> {
               ],
             ),
             SizedBox(
-              height: 10,
+              height: 20,
             ),
             Center(
               child: Padding(
@@ -134,54 +127,52 @@ class _OverreviewState extends State<Overreview> {
                 ),
                 child: Column(children: [
                   SizedBox(
-                    height: 350,
-                    child:
-
-                        // all.isEmpty
-                        //     ?
-                        Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        const Text(
-                          "No transaction now trying to add",
-                          style: TextStyle(color: Colors.black45, fontSize: 16),
-                        ),
-                        Image.asset(
-                          'assets/chart_data_.png',
-                          height: 250,
-                        ),
-                      ],
-                    ),
-                    // : SfCircularChart(
-                    //     legend: Legend(
-                    //       isVisible: true,
-                    //     ),
-                    //     title: ChartTitle(text: 'Totel transactions'),
-                    //     series: <DoughnutSeries>[
-                    //         // Render pie chart
-                    //         DoughnutSeries<Chartdata, String>(
-                    //             dataLabelSettings: const DataLabelSettings(
-                    //               isVisible: true,
-                    //               labelIntersectAction:
-                    //                   LabelIntersectAction.shift,
-                    //             ),
-                    //             dataSource: chartdrop ==
-                    //                     'transltionsnotfier'
-                    //                 ? all
-                    //                 : chartdrop == 'todaynotfier'
-                    //                     ? today
-                    //                     : chartdrop == 'yesterdaynotfier'
-                    //                         ? yesterday
-                    //                         : chartdrop == 'monthnotfier'
-                    //                             ? monthly
-                    //                             : all,
-                    //             xValueMapper: (Chartdata data, _) =>
-                    //                 data.categories,
-                    //             yValueMapper: (Chartdata data, _) =>
-                    //                 data.amount,
-                    //             explode: true,
-                    //             explodeIndex: 1),
-                    //       ]),
+                    height: 450,
+                    child: all.isEmpty
+                        ? Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              const Text(
+                                "No transaction now trying to add",
+                                style: TextStyle(
+                                    color: Colors.black45, fontSize: 16),
+                              ),
+                              Image.asset(
+                                'assets/chart_data_.png',
+                                height: 200,
+                              ),
+                            ],
+                          )
+                        : SfCircularChart(
+                            legend: Legend(
+                              isVisible: true,
+                            ),
+                            title: ChartTitle(text: 'Totel transactions'),
+                            series: <DoughnutSeries>[
+                                // Render pie chart
+                                DoughnutSeries<Chartdata, String>(
+                                    dataLabelSettings: const DataLabelSettings(
+                                      isVisible: true,
+                                      labelIntersectAction:
+                                          LabelIntersectAction.shift,
+                                    ),
+                                    dataSource: chartdrop ==
+                                            'transltionsnotfier'
+                                        ? all
+                                        : chartdrop == 'todaynotfier'
+                                            ? today
+                                            : chartdrop == 'yesterdaynotfier'
+                                                ? yesterday
+                                                : chartdrop == 'monthnotfier'
+                                                    ? monthly
+                                                    : all,
+                                    xValueMapper: (Chartdata data, _) =>
+                                        data.categories,
+                                    yValueMapper: (Chartdata data, _) =>
+                                        data.amount,
+                                    explode: true,
+                                    explodeIndex: 1),
+                              ]),
                   ),
                 ]),
               ),
@@ -192,33 +183,32 @@ class _OverreviewState extends State<Overreview> {
     );
   }
 
-  // Future<void> onPressed({
-  //   required BuildContext context,
-  //   String? locale,
-  // }) async {
-  //   final localeObj = locale != null ? Locale(locale) : null;
-  //   final selected = await showMonthYearPicker(
-  //     context: context,
-  //     initialDate: selectedmonth,
-  //     firstDate: DateTime(2017),
-  //     lastDate: DateTime(2023),
-  //     locale: localeObj,
-  //   );
+  Future<void> onPressed({
+    required BuildContext context,
+    String? locale,
+  }) async {
+    final localeObj = locale != null ? Locale(locale) : null;
+    final selected = await showMonthYearPicker(
+      context: context,
+      initialDate: selectedmonth,
+      firstDate: DateTime(2017),
+      lastDate: DateTime(2023),
+      locale: localeObj,
+    );
 
-  //   if (selected != null) {
-  //     setState(() {
-  //       selectedmonth = selected;
-  //     });
-  //   }
+    if (selected != null) {
+      // setState(() {
+      selectedmonth = selected;
+      // });
+    }
 
-  //   Tracnsltion.instense.monthnotfier.value.clear();
-  //   Future.forEach(Tracnsltion.instense.transltionsnotfier.value,
-  //       (TranclationModel element) {
-  //     if (element.datetime.month == selectedmonth.month &&
-  //         element.datetime.year == selectedmonth.year) {
-  //       Tracnsltion.instense.monthnotfier.value.add(element);
-  //     }
-  //     Tracnsltion.instense.monthnotfier.notifyListeners();
-  //   });
-  // }
+    home.monthnotfier.clear();
+    Future.forEach(home.transltionsnotfier, (TranclationModel element) {
+      if (element.datetime.month == selectedmonth.month &&
+          element.datetime.year == selectedmonth.year) {
+        home.monthnotfier.add(element);
+      }
+      //upadate
+    });
+  }
 }

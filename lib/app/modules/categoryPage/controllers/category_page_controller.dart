@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:levy/app/modules/globealVaribles/globle.dart';
 
 import '../../../Model/Categroy_Model/catagroy_model.dart';
 

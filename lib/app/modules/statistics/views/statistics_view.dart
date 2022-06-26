@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:levy/app/modules/home/controllers/home_controller.dart';
 import 'package:levy/app/modules/statistics/views/widget/statistics_Income.dart';
 import 'package:levy/app/modules/statistics/views/widget/statistics_expanse.dart';
 import 'package:levy/app/modules/statistics/views/widget/statistics_total.dart';
-import 'package:sizer/sizer.dart';
+
 import '../../../../icons/moneyicons.dart';
 import '../../globealVaribles/globle.dart';
 
@@ -20,7 +22,6 @@ class StatisticsView extends StatelessWidget {
           pressedtime = DateTime.now();
 
           if (isExieit) {
-            // backexitsnackbar();
             return false;
           } else {
             return true;
@@ -31,7 +32,7 @@ class StatisticsView extends StatelessWidget {
           appBar: AppBar(
               elevation: 0.0,
               backgroundColor: const Color(0xffe0e0e0),
-              toolbarHeight: 50,
+              toolbarHeight: 40,
               bottom: TabBar(
                   labelColor: const Color(0xff0097a7),
                   unselectedLabelColor: Colors.black45,
@@ -82,37 +83,27 @@ class StatisticsView extends StatelessWidget {
                     )),
                   ])),
           body: TabBarView(children: [
-            Center(child: const Overreview()),
-            Center(child: const Chartincome()),
-            Center(child: const Expansewidget()),
-            // Center(
-            //     child: ValueListenableBuilder(
-            //   builder: (BuildContext context, value, Widget? child) {
-            //     math(value);
-
-            //     return const Chartincome();
-            //   },
-            //   valueListenable: Tracnsltion.instense.transltionsnotfier,
-            // )),
-            // Center(
-            //     child: ValueListenableBuilder(
-            //   builder: (BuildContext context, value, Widget? child) {
-            //     math(value);
-
-            //     return const Expansewidget();
-            //   },
-            //   valueListenable: Tracnsltion.instense.transltionsnotfier,
-            // )),
+            Center(
+              child: GetBuilder<HomeController>(
+                builder: (ctrol) {
+                  // math(value);
+                  return Overreview();
+                },
+              ),
+            ),
+            Center(child: GetBuilder<HomeController>(
+              builder: (child) {
+                return Chartincome();
+              },
+            )),
+            Center(child: GetBuilder<HomeController>(
+              builder: (child) {
+                return Expansewidget();
+              },
+            )),
           ]),
         ),
       ),
     );
   }
-
-  // backexitsnackbar() {
-  //   ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-  //       duration: Duration(seconds: 2),
-  //       backgroundColor: Color.fromARGB(255, 66, 66, 66),
-  //       content: Text(" Press back again to exite ")));
-  // }
 }

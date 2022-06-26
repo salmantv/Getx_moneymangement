@@ -1,32 +1,25 @@
 import 'package:flutter/material.dart';
-import 'package:sizer/sizer.dart';
-
+import 'package:get/get.dart';
+import 'package:levy/app/modules/home/controllers/home_controller.dart';
+import '../../../globealVaribles/globle.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
-class Expansewidget extends StatefulWidget {
-  const Expansewidget({Key? key}) : super(key: key);
+import '../../../home/views/widget/totelBalanse.dart';
 
-  @override
-  State<Expansewidget> createState() => _ExpansewidgetState();
-}
+class Expansewidget extends StatelessWidget {
+  Expansewidget({Key? key}) : super(key: key);
 
-class _ExpansewidgetState extends State<Expansewidget> {
-  // ignore: unused_field
+  final home = Get.put(HomeController());
   late TooltipBehavior _tooltipBehavior;
 
   @override
-  void initState() {
+  Widget build(BuildContext context) {
     _tooltipBehavior = TooltipBehavior(
       enable: true,
       canShowMarker: false,
     );
-    super.initState();
-  }
 
-  @override
-  Widget build(BuildContext context) {
-    // List<Chartdata> connectedList =
-    //     chartlogic(Tracnsltion.instense.expansenotfiere.value);
+    List<Chartdata> connectedList = chartlogic(home.expansenotfiere);
 
     return Scaffold(
         body: Container(
@@ -44,69 +37,65 @@ class _ExpansewidgetState extends State<Expansewidget> {
               height: 20,
             ),
             SizedBox(
-                height: 370,
-                child:
-                    //  connectedList.isEmpty
-                    //     ? Column(
-                    //         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    //         children: [
-                    //           const Text(
-                    //             "No transaction now trying to add",
-                    //             style:
-                    //                 TextStyle(color: Colors.black45, fontSize: 16),
-                    //           ),
-                    //           Image.asset(
-                    //             'assets/chart_data_.png',
-                    //             height: 25.h,
-                    //           ),
-                    //         ],
-                    //       )
-                    //     :
-
-                    //  connectedList.length < 2
-                    //     ?
-                    Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    const Text(
-                      "Minimum two expanse transaction",
-                      style: TextStyle(color: Colors.black87, fontSize: 16),
-                    ),
-                    Image.asset(
-                      'assets/chart_data_.png',
-                      height: 250,
-                    ),
-                  ],
-                )
-                // : SfCartesianChart(
-                //     title: ChartTitle(
-                //       text: 'Expanse Category analysis',
-                //       textStyle: const TextStyle(
-                //           color: Colors.black54,
-                //           fontSize: 15,
-                //           fontWeight: FontWeight.w500),
-                //     ),
-                //     primaryXAxis: CategoryAxis(),
-                //     primaryYAxis: NumericAxis(isVisible: false),
-                //     series: <ChartSeries<Chartdata, String>>[
-                //         // Renders column chart
-                //         ColumnSeries<Chartdata, String>(
-                //             dataSource: connectedList,
-                //             xValueMapper: (Chartdata data, _) =>
-                //                 data.categories,
-                //             yValueMapper: (Chartdata data, _) =>
-                //                 data.amount,
-                //             pointColorMapper: (Chartdata data, _) =>
-                //                 const Color.fromARGB(255, 161, 45, 12),
-                //             dataLabelSettings: const DataLabelSettings(
-                //                 isVisible: true))
-                //       ])),
-                // Total(
-                //   amount: totelexpanse,
-                //   heding: 'Totel Expanse',
-                //   monthe: 'Stop solving problems with new products.',
-                // ),
-                )
+                height: 350,
+                child: connectedList.isEmpty
+                    ? Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          const Text(
+                            "No transaction now trying to add",
+                            style:
+                                TextStyle(color: Colors.black45, fontSize: 16),
+                          ),
+                          Image.asset(
+                            'assets/chart_data_.png',
+                            height: 250,
+                          ),
+                        ],
+                      )
+                    : connectedList.length < 2
+                        ? Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              const Text(
+                                "Minimum two expanse transaction",
+                                style: TextStyle(
+                                    color: Colors.black87, fontSize: 16),
+                              ),
+                              Image.asset(
+                                'assets/chart_data_.png',
+                                height: 250,
+                              ),
+                            ],
+                          )
+                        : SfCartesianChart(
+                            title: ChartTitle(
+                              text: 'Expanse Category analysis',
+                              textStyle: const TextStyle(
+                                  color: Colors.black54,
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w500),
+                            ),
+                            primaryXAxis: CategoryAxis(),
+                            primaryYAxis: NumericAxis(isVisible: false),
+                            series: <ChartSeries<Chartdata, String>>[
+                                // Renders column chart
+                                ColumnSeries<Chartdata, String>(
+                                    dataSource: connectedList,
+                                    xValueMapper: (Chartdata data, _) =>
+                                        data.categories,
+                                    yValueMapper: (Chartdata data, _) =>
+                                        data.amount,
+                                    pointColorMapper: (Chartdata data, _) =>
+                                        const Color.fromARGB(255, 161, 45, 12),
+                                    dataLabelSettings: const DataLabelSettings(
+                                        isVisible: true))
+                              ])),
+            Total(
+              amount: totelexpanse,
+              heding: 'Totel Expanse',
+              monthe: 'Stop solving problems with new products.',
+            ),
           ],
         ),
       )),

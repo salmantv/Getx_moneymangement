@@ -40,7 +40,6 @@ class HomeController extends GetxController {
   }
 
   Future refrsh() async {
-    // homecontroller.onInit();
     todaynotfier.clear();
     yesterdaynotfier.clear();
     final _alllist = await gettranction();
@@ -75,6 +74,7 @@ class HomeController extends GetxController {
     Future.forEach(_alllist, (TranclationModel element) {});
     transltionsnotfier.clear();
     transltionsnotfier.addAll(_alllist);
+    homecontroller.onInit();
   }
 
   Future<void> addtransltion(TranclationModel value) async {
@@ -106,5 +106,6 @@ class HomeController extends GetxController {
   Future<void> Claredata() async {
     final _db = await Hive.openBox<TranclationModel>("transltion_db_open");
     _db.clear();
+    homecontroller.onInit();
   }
 }

@@ -1,20 +1,16 @@
 import 'package:get/get.dart';
 
+import '../../categoryPage/controllers/category_page_controller.dart';
+import '../../home/controllers/home_controller.dart';
+
 class SettingsController extends GetxController {
-  //TODO: Implement SettingsController
+  final home = Get.put(HomeController());
+  final category = Get.put(CategoryPageController());
 
-  final count = 0.obs;
-  @override
-  void onInit() {
-    super.onInit();
+  restingapp() {
+    home.Claredata();
+    category.deletealldatafromedatabase();
+    update();
+    // home.onInit();
   }
-
-  @override
-  void onReady() {
-    super.onReady();
-  }
-
-  @override
-  void onClose() {}
-  void increment() => count.value++;
 }
