@@ -51,6 +51,6 @@ class CategoryPageController extends GetxController {
 
   Future<void> deletealldatafromedatabase() async {
     final _categoryDB = await Hive.openBox<CategoryModel>(CATEGORY_DB_NAME);
-    _categoryDB.clear();
+    await _categoryDB.clear();
   }
 }

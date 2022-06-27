@@ -4,25 +4,16 @@ import 'package:flutter/material.dart';
 import 'package:timezone/data/latest.dart' as tz;
 
 // ignore: must_be_immutable
-class MylistTile extends StatefulWidget {
+class MylistTile extends StatelessWidget {
   MylistTile({Key? key, this.icon, this.name}) : super(key: key);
 
   IconData? icon;
   String? name;
 
   @override
-  State<MylistTile> createState() => _MylistTileState();
-}
-
-class _MylistTileState extends State<MylistTile> {
-  @override
-  void initState() {
-    super.initState();
-    tz.initializeTimeZones();
-  }
-
-  @override
   Widget build(BuildContext context) {
+    tz.initializeTimeZones();
+
     return Column(
       children: [
         Padding(
@@ -31,10 +22,10 @@ class _MylistTileState extends State<MylistTile> {
             elevation: 4,
             child: ListTile(
               leading: Icon(
-                widget.icon,
+                icon,
                 size: 30,
               ),
-              title: Text('${widget.name}'),
+              title: Text('${name}'),
             ),
           ),
         ),

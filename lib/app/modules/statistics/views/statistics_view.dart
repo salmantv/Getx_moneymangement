@@ -86,7 +86,6 @@ class StatisticsView extends StatelessWidget {
             Center(
               child: GetBuilder<HomeController>(
                 builder: (ctrol) {
-                  // math(value);
                   return Overreview();
                 },
               ),

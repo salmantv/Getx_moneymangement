@@ -21,22 +21,23 @@ String chartdrop = 'transltionsnotfier';
 
 var dateTimenow = DateTime.now().month.toString();
 var dateTimeyear = DateTime.now().year.toString();
-math(value) {
-  toteltracstion = 0;
-  totelincome = 0;
-  totelexpanse = 0;
-  homecontroller.transltionsnotfier.forEach((element) {
-    if (element.categorytyp == categorytype.income &&
-        element.datetime.month == DateTime.now().month) {
-      totelincome += element.amount;
-    }
-    if (element.categorytyp == categorytype.expanse &&
-        element.datetime.month == DateTime.now().month) {
-      totelexpanse += element.amount;
-    }
-  });
-  toteltracstion = totelincome - totelexpanse;
-}
+// math(value) {
+//   toteltracstion = 0;
+//   totelincome = 0;
+//   totelexpanse = 0;
+//   homecontroller.transltionsnotfier.forEach((element) {
+//     if (element.categorytyp == categorytype.income &&
+//         element.datetime.month == DateTime.now().month) {
+//       totelincome += element.amount;
+//     }
+//     if (element.categorytyp == categorytype.expanse &&
+//         element.datetime.month == DateTime.now().month) {
+//       totelexpanse += element.amount;
+//     }
+//   });
+//   toteltracstion = totelincome - totelexpanse;
+
+// }
 
 class Chartdata {
   String? categories;

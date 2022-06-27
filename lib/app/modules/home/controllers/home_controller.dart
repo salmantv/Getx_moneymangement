@@ -74,7 +74,6 @@ class HomeController extends GetxController {
     Future.forEach(_alllist, (TranclationModel element) {});
     transltionsnotfier.clear();
     transltionsnotfier.addAll(_alllist);
-    homecontroller.onInit();
   }
 
   Future<void> addtransltion(TranclationModel value) async {
@@ -92,6 +91,8 @@ class HomeController extends GetxController {
   Future<void> deleteingTrastions(TranclationModel Id) async {
     final _db = await Hive.openBox<TranclationModel>("transltion_db_open");
     _db.delete(Id.id);
+    toteltracstion = 0;
+
     refrsh();
   }
 
@@ -99,13 +100,12 @@ class HomeController extends GetxController {
     final _db = await Hive.openBox<TranclationModel>("transltion_db_open");
     _db.put(data.id, data);
     refrsh();
-    homecontroller.onInit();
   }
 
   // ignore: non_constant_identifier_names
   Future<void> Claredata() async {
     final _db = await Hive.openBox<TranclationModel>("transltion_db_open");
-    _db.clear();
-    homecontroller.onInit();
+    await _db.clear();
+    toteltracstion = 0;
   }
 }

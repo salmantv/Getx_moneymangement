@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
 import 'package:levy/app/modules/categoryPage/controllers/category_page_controller.dart';
 import 'package:levy/app/modules/home/controllers/home_controller.dart';
-import 'package:levy/app/modules/home/views/home_view.dart';
 import 'package:levy/app/modules/settings/controllers/settings_controller.dart';
 import 'package:levy/app/modules/settings/views/widgets/listTiile.dart';
 import 'package:levy/app/modules/settings/views/widgets/notication.dart';
@@ -41,7 +38,6 @@ class SettingsView extends StatelessWidget {
         pressedtime = DateTime.now();
 
         if (isExieit) {
-          backexitsnackbar(context);
           return false;
         } else {
           return true;
@@ -55,10 +51,10 @@ class SettingsView extends StatelessWidget {
               child: ListView(
             children: [
               SizedBox(
-                height: 20,
+                height: 30,
               ),
               SizedBox(
-                height: 20,
+                height: 50,
                 child: const Center(
                   child: Text(
                     "Settings",
@@ -71,7 +67,7 @@ class SettingsView extends StatelessWidget {
               ),
               InkWell(
                 onTap: () {
-                  timePicking(context: context);
+                  setting.timePicking(context: context);
                 },
                 child: MylistTile(
                   icon: MyFlutterApp.alarm,
@@ -97,7 +93,7 @@ class SettingsView extends StatelessWidget {
               ),
               InkWell(
                 onTap: () {
-                  restalldata(
+                  setting.restalldata(
                     context,
                     "Rest Data",
                   );
@@ -124,69 +120,6 @@ class SettingsView extends StatelessWidget {
           )),
         ),
       ),
-    );
-  }
-
-  timePicking({required context}) async {
-    final TimeOfDay? pickedTIme = await showTimePicker(
-      initialEntryMode: TimePickerEntryMode.dial,
-      context: context,
-      initialTime: TimeOfDay.now(),
-    );
-    if (pickedTIme != null && pickedTIme != TimeOfDay.now()) {
-      // setState(() {
-      NotificationApi.showScheduledNotifications(
-          title: "Levy",
-          body:
-              "⏳ Hi I thing We miss to add new transaction  🕥 And click the notfiaction and add   📅  ",
-          scheduledTime: Time(pickedTIme.hour, pickedTIme.minute, 0));
-      // });
-    }
-  }
-
-  backexitsnackbar(context) {
-    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        duration: Duration(seconds: 2),
-        backgroundColor: Color.fromARGB(255, 66, 66, 66),
-        content: Text(" Press back again to exite ")));
-  }
-
-  Future<void> restalldata(
-    BuildContext context,
-    String titel,
-  ) async {
-    showDialog(
-      context: context,
-      builder: (ctx) {
-        return AlertDialog(
-          content: SizedBox(
-            height: 100,
-            child: Column(
-              children: [
-                SizedBox(
-                  height: 20,
-                ),
-                const Text("All of this applications data will be deleted "
-                    "Permanently . This includes all files ,settings , transaction , also data base.")
-              ],
-            ),
-          ),
-          actions: [
-            TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                child: const Text("Cancel")),
-            TextButton(
-                onPressed: () async {
-                  await setting.restingapp();
-                  homecontroller.update();
-                  // setState(() {});
-                },
-                child: const Text("Accept"))
-          ],
-        );
-      },
     );
   }
 }
